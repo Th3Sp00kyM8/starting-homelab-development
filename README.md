@@ -34,7 +34,7 @@ Project | Description | Documentation
 
 ---
 
-## 📡 Network Diagram
+## Network Diagram
 
 ![Network Diagram](network-diagram.png)
 *(Simplified visual of physical & logical topology.)*
