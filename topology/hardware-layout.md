@@ -1,14 +1,14 @@
-# 🧠 Introduction & Rack Overview
+# Rack Overview
 
 This homelab is a compact, rack-mounted environment built to simulate enterprise-grade network and security infrastructures. Its purpose is to provide a controlled space for learning, testing, and documenting cybersecurity concepts while pursuing certifications such as Network+, Security+, CySA+, CEH, and AWS Cloud Practitioner.
 
-### 🎯 Objectives
+### Objectives
 - Gain practical experience configuring firewalls, routers, and switches.  
 - Develop hands-on understanding of VLANs, VPNs, IDS/IPS systems, and secure network segmentation.  
 - Host and monitor lightweight servers (Ubuntu 24 LTS on Raspberry Pi 4 & 5).  
 - Build a foundation for future cloud, automation, and SIEM integrations.  
 
-### 🧱 Physical Environment
+### Physical Environment
 - **Form Factor:** GeeekPi T0 mini rack — compact, open-frame design suitable for small spaces.  
 - **Mounting:** Devices secured on 19 ″ shelves with a recessed power strip for cable management.  
 - **Power Backup:** CyberPower EC650LCD UPS (650 VA / 390 W) providing surge protection and short-term runtime for all core devices.  
@@ -18,11 +18,11 @@ This homelab is a compact, rack-mounted environment built to simulate enterprise
 
 This rack acts as the backbone for all current and future cybersecurity labs, balancing energy efficiency, reliability, and modular scalability. It mirrors a scaled-down enterprise topology, giving room to practice both network administration and defensive security principles in a realistic yet manageable setup.
 
-## ⚙️ Hardware + Power Layout
+## Hardware + Power Layout
 
 This section documents the physical and electrical organization of the homelab rack. Every device is powered through a dedicated, battery-backed source to maintain uptime and prevent data loss during interruptions.
 
-### 🔌 Power System
+### Power System
 
 **Primary UPS:**  
 **CyberPower EC650LCD Ecological Battery Backup and Surge Protector**  
@@ -48,7 +48,7 @@ This section documents the physical and electrical organization of the homelab r
 | GL.iNet Slate AX | USB-C | Bridge between hotspot and router. |
 | Mountable Power Strip | N/A | Acts as internal power distribution hub. |
 
-### 🧱 Rack Order (Top → Bottom)
+### Rack Order (Top → Bottom)
 
 | Position | Component | Function |
 |-----------|------------|-----------|
@@ -61,7 +61,7 @@ This section documents the physical and electrical organization of the homelab r
 | 7 | GL.iNet Slate AX | Hotspot bridge / VPN test router. |
 | 8 | CyberPower EC650LCD UPS + Recessed Power Strip | Power foundation for entire rack. |
 
-### ⚡ Power Strategy
+### Power Strategy
 
 - Core network components (Vault, ER605, switch, access point) receive battery-backed power.  
 - Compute nodes (Pis) are low-draw devices on the same UPS circuit for clean shutdowns.  
@@ -71,16 +71,16 @@ This section documents the physical and electrical organization of the homelab r
 The power design prioritizes **stability, energy efficiency, and cable management**. Every component is accessible, labeled, and arranged to support quick maintenance or upgrades.
 
 
-## 🌐 Network Architecture & Data Flow
+## Network Architecture & Data Flow
 
 This section outlines how traffic moves through the homelab—from the external connection (hotspot) to the internal network nodes—and how each device contributes to performance, control, and security.
 
-### 🔄 Network Path
+### Network Path
 
 **Primary Flow:**  
 > Hotspot → GL.iNet Slate AX (Bridge/Modem) → TP-Link ER605 (Router) → Protectli Vault FW4B (Firewall) → TP-Link TL-SG108PE (Switch) → TP-Link EAP610 (Access Point) → Raspberry Pi 4 / Raspberry Pi 5 → Future Lab Devices
 
-### 🧭 Component Roles
+### Component Roles
 
 | Device | Function | Notes |
 |---------|-----------|-------|
@@ -93,7 +93,7 @@ This section outlines how traffic moves through the homelab—from the external 
 | **Raspberry Pi 4 / 5** | Compute Nodes | Host services like Pi-hole, Docker containers, SIEM agents, and IDS sensors. Provide visibility into traffic and system behavior. |
 | **Future Devices** | Peripheral or Lab Equipment | Placeholder for webcams, NAS, IoT, or honeypot devices for future security simulations. |
 
-### 🧩 Network Logic
+### Network Logic
 
 This layered path simulates a **small enterprise topology**, where routing, security, and access are intentionally separated:
 
@@ -128,7 +128,7 @@ This layered path simulates a **small enterprise topology**, where routing, secu
   - **IoT SSID** — for smart or low-trust devices.  
   - **Guest SSID** — isolated public connection if needed.  
 
-### 🧠 Summary
+### Summary
 
 This network design ensures:
 - **Segmentation:** Separate VLANs prevent unauthorized lateral movement.  
@@ -136,13 +136,13 @@ This network design ensures:
 - **Visibility:** Traffic can be mirrored or monitored for IDS/SIEM analysis.  
 - **Realism:** Mirrors multi-layer enterprise environments while remaining energy-efficient and compact.
 
-## 🧠 Design Logic & Device Synergy
+## Design Logic & Device Synergy
 
 This homelab was designed to be modular, efficient, and realistic — replicating how a small enterprise network separates roles across routing, security, access, and compute layers. Each component was selected based on its technical purpose, compatibility, and contribution to overall system synergy.
 
 ---
 
-### 🔒 Security & Routing Layers
+### Security & Routing Layers
 
 **Protectli Vault FW4B (pfSense Firewall):**  
 - Chosen as the central security appliance for its open-source flexibility and enterprise-level firewalling.  
@@ -162,7 +162,7 @@ This separation models real-world **defense-in-depth** and enables independent f
 
 ---
 
-### 🌐 Network Access & Distribution Layers
+### Network Access & Distribution Layers
 
 **TP-Link TL-SG108PE (PoE+ Switch):**  
 - Acts as the wired backbone for all network devices.  
@@ -179,7 +179,7 @@ The switch and access point extend pfSense VLANs across both wired and wireless 
 
 ---
 
-### 🧩 Compute & Experimentation Layer
+### Compute & Experimentation Layer
 
 **Raspberry Pi 4 & Raspberry Pi 5 (Ubuntu Server 24 LTS):**  
 - Serve as compact, energy-efficient compute nodes for running Docker containers, Pi-hole, Wazuh, and Suricata.  
@@ -191,7 +191,7 @@ Both Pis are low-cost and modular, letting experiments fail safely without riski
 
 ---
 
-### 🔌 Power & Reliability Layer
+### Power & Reliability Layer
 
 **CyberPower EC650LCD UPS + Recessed Power Strip:**  
 - Ensures uninterrupted operation of all core devices and allows for controlled shutdowns during power loss.  
@@ -203,7 +203,7 @@ The UPS and power strip act as a **power foundation layer**, protecting equipmen
 
 ---
 
-### 🚀 Design Philosophy
+### Design Philosophy
 
 The overall design follows three principles:
 
@@ -215,7 +215,7 @@ This modular, layered approach supports future scaling — adding a NAS, honeypo
 
 ---
 
-### 🔮 Future Expansion
+### Future Expansion
 
 | Category | Planned Additions | Purpose |
 |-----------|------------------|----------|
@@ -227,7 +227,7 @@ This modular, layered approach supports future scaling — adding a NAS, honeypo
 
 ---
 
-### 🧾 Summary
+### Summary
 
 This homelab is not a random assortment of parts — it’s a **designed ecosystem** where every device reinforces another.  
 Power ensures uptime, routing isolates flows, firewalls enforce trust boundaries, and compute nodes bring experimentation to life.  
