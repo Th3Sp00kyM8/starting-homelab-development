@@ -193,7 +193,7 @@ This modular, layered approach supports future scaling: adding a NAS, honeypots,
 | **Storage** | NAS (TrueNAS, Synology) | Centralized backups and data hosting |
 | **IoT Testing** | Cameras, sensors, smart devices | Network segmentation and vulnerability analysis |
 | **Automation** | Ansible, Python automation scripts | Infrastructure-as-code and rapid lab redeployment |
-| **Cloud Integration** | AWS / Azure nodes | Hybrid lab experiments for cloud security testing |
+| **Cloud Integration** | AWS nodes | Hybrid lab experiments for cloud security testing |
 
 ---
 
