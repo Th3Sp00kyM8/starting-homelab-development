@@ -1,15 +1,36 @@
 
 <img width="1947" height="2387" alt="Cisco network diagram" src="https://github.com/user-attachments/assets/444ee836-6a17-426a-9c46-66c5008d8c1b" />
-Draft 1.0
 
-## Network Overview & Design Nuances
+## Network Overview Draft 1.0
 
-This network is designed to emulate a layered enterprise environment within a compact home lab. Each component serves a distinct purpose within a modular, defense-in-depth structure, emphasizing separation of roles, segmentation, and realistic visibility.
+This network is structured for modularity, visibility, and segmentation.  
+- **Bridge (GL.iNet):** Converts wireless WAN from a hotspot to Ethernet for stable routing.  
+- **Router → Firewall chain:** Separates edge routing (ER605) from internal security (pfSense) to mirror enterprise layering.  
+- **Managed Switch:** Central distribution for VLANs, PoE power, and traffic monitoring via SPAN.  
+- **Access Point:** Broadcasts VLAN-specific SSIDs for Admin, Lab, IoT, and Guest networks.  
+- **Compute Layer:** Raspberry Pis handle light services (DNS, containers); the mini PC serves as a security node for SIEM, IDS, and log aggregation.  
+- **UPS:** Maintains uptime and supports graceful shutdowns.  
 
-The topology begins with a **GL.iNet Slate AX** acting as a *wireless bridge*, converting a mobile hotspot connection into a wired uplink for the **TP-Link ER605** router. The ER605 performs basic routing and WAN management before handing traffic to the **Protectli Vault running pfSense**, which enforces advanced firewall rules, VLAN segmentation, and packet inspection.
+## Current Limitations & Design Considerations
 
-A managed **TP-Link TL-SG108PE PoE+ switch** distributes both data and power across the network, linking wired endpoints and the **TP-Link EAP610 access point**, which extends connectivity through multiple SSIDs tied to VLANs (Admin, Lab, IoT, Guest). This segmentation ensures that wireless devices operate within their designated trust zones.
+### 🧩 Functional Gaps
+- **No central authentication:** User and device access rely on local credentials; no RADIUS, LDAP, or SSO integration yet.  
+- **No automated backups:** Configurations (pfSense, switch, Pi services) are not yet on scheduled or version-controlled backups.  
+- **Limited visibility scope:** pfSense and Pi nodes log locally; full log correlation and long-term retention depend on the Security Server build-out.  
+- **No vulnerability scanning or compliance auditing:** No OpenVAS, Nessus, or CIS benchmark scanning implemented yet.  
+- **No high availability (HA):** Single points of failure exist at the router, firewall, and switch levels.  
+- **Double NAT remains:** Current chain (Router → Firewall) introduces double NAT until bridge/passthrough mode is finalized.  
+- **No remote management isolation:** Admin access occurs over the same VLAN as local devices; a dedicated management subnet is under review.
 
-Downstream, compute and monitoring devices — including two **Raspberry Pi nodes** and a **dedicated Security Server (mini PC)** — form the analytical and experimental layer. The Pis host lightweight services such as DNS filtering, containers, and test automation, while the Security Server aggregates logs, runs SIEM and IDS workloads, and provides centralized visibility across all VLANs. This setup models a small-scale SOC environment, where data from multiple sources can be correlated for threat detection and incident response.
+### Planned Design Improvements
+- **Network Monitoring:** Implementing Grafana + Prometheus or Netdata for device metrics and uptime visualization.  
+- **SIEM Integration:** Deploying Wazuh or Security Onion on the Security Server for log correlation and alerting.  
+- **Automated Configuration Management:** Using Ansible for backup, patching, and provisioning across Pis and pfSense.  
+- **NAS Integration:** Adding local network storage for log retention, backups, and forensic data.  
+- **VLAN Refinement:** Expanding segmentation to include a dedicated Monitoring VLAN and DMZ for honeypots or test servers.  
+- **Cloud Connectivity:** Linking an AWS node via VPN to simulate hybrid-cloud security models.  
+- **Threat Simulation:** Introducing honeypots and IDS testing for active defense exercises.  
+- **Identity & Access Control:** Evaluating lightweight RADIUS or FreeIPA setup for centralized authentication.  
+- **Power & Environment Monitoring:** Exploring SNMP-based UPS and temperature sensors for system health tracking.
 
-Every element of the network is powered through a **CyberPower UPS**, maintaining operational continuity during outages and reflecting enterprise-grade reliability practices. The resulting design provides not just connectivity, but a controlled environment for practicing network security, monitoring, and system hardening in a realistic, scalable way.
+These refinements aim to evolve the lab from a segmented local network into a fully observable, managed, and automatable defensive environment.
