@@ -20,27 +20,6 @@ This rack acts as the backbone for my current and future cybersecurity labs, bal
 
 ---
 
-## Hardware + Power Layout
-
-This section documents the physical and electrical organization of the homelab rack. Every device is powered through a dedicated, battery-backed source to maintain uptime and prevent data loss during interruptions.
-
-### Power System
-
-**Primary UPS:**  
-**CyberPower EC650LCD Ecological Battery Backup and Surge Protector**  
-- 650 VA / 390 W capacity with ECO mode for peripheral control.  
-- Eight outlets: four battery-backed, four surge-only.  
-- LCD interface for load and runtime monitoring.  
-- Supplies consistent power to all networking and compute hardware.
-
-**Connection Hierarchy:**  
-1. Wall outlet → UPS input.  
-2. UPS → recessed, mountable power strip integrated into rack.
-
-The power design prioritizes stability, energy efficiency, and cable management. Every component is accessible, labeled, and arranged to support quick maintenance or upgrades.
-
----
-
 ## Network Architecture & Data Flow
 
 This section outlines how traffic moves through the homelab—from the external connection to the internal network nodes and how each device contributes to performance, control, and security.
