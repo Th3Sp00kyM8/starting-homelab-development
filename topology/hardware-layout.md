@@ -130,6 +130,9 @@ These two devices together create a layered defense model:
 2. The Protectli Vault enforces detailed firewall rules and segmentation.  
 This separation models real-world defense-in-depth and enables independent failure testing of routing vs. security functions.
 
+**Note:**
+- Because this topology uses both a router (TP-Link ER605) and a firewall (Protectli Vault running pfSense), there is a potential for double NAT.
+
 ---
 
 ### Network Access & Distribution Layers
@@ -187,13 +190,17 @@ This modular, layered approach supports future scaling: adding a NAS, honeypots,
 
 ### Future Expansion
 
+The current rack design leaves headroom for additional devices and new learning domains. These additions will help simulate more complex and realistic enterprise or IoT environments.
+
 | Category | Planned Additions | Purpose |
 |-----------|------------------|----------|
-| **Security** | Honeypots, dedicated IDS appliances | Threat analysis and intrusion research |
+| **Security Monitoring** | Honeypots, dedicated IDS appliances | Threat analysis and intrusion research | Advance traffic inspection, file sharing, and log archiving |
 | **Storage** | NAS (TrueNAS, Synology) | Centralized backups and data hosting |
-| **IoT Testing** | Cameras, sensors, smart devices | Network segmentation and vulnerability analysis |
-| **Automation** | Ansible, Python automation scripts | Infrastructure-as-code and rapid lab redeployment |
+| **IoT Testing** | Cameras, sensors, smart devices | Network segmentation and vulnerability analysis | VLAN isolation, IoT threat modeling |
+| **Automation & Orchestration** | Ansible, Python automation scripts | Infrastructure-as-code and rapid lab redeployment |
 | **Cloud Integration** | AWS nodes | Hybrid lab experiments for cloud security testing |
+| **Storage & Backup** | NAS (TrueNAS, Synology, or Pi-based) | Centralized backups, file sharing, and log archiving. |
+| **Endpoint Security** | Lightweight Linux or Windows VM | Host-based firewall, antivirus, and SOC analysis exercises. |
 
 ---
 
