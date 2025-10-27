@@ -1,6 +1,6 @@
 # Rack Overview
 
-This homelab is a compact, rack-mounted environment built to simulate enterprise-grade network and security infrastructures. Its purpose is to provide a controlled space for learning, testing, and documenting cybersecurity concepts while pursuing certifications such as Network+, Security+, CySA+, CEH, and AWS Cloud Practitioner.
+This homelab is a compact, rack-mounted environment built to simulate enterprise-grade network and security infrastructures. Its purpose is to provide a controlled space for learning, testing, and documenting cybersecurity concepts.
 
 ### Objectives
 - Gain practical experience configuring firewalls, routers, and switches.  
