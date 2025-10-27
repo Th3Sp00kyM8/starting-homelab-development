@@ -1,14 +1,14 @@
 # Rack Overview
 
-This homelab is a compact, rack-mounted environment built to simulate an enterprise-grade network and security infrastructure. Its purpose is to provide a controlled space for learning, testing, and documenting cybersecurity concepts.
+This homelab is a compact, rack mounted environment built to simulate an enterprise grade network and security infrastructure. Its purpose is to provide a controlled space for learning, testing, and documenting cybersecurity concepts.
 
 ### Objectives
 - Gain practical experience configuring firewalls, routers, and switches.  
-- Develop hands-on understanding of VLANs, VPNs, IDS/IPS systems, and secure network segmentation.  
+- Develop hands on understanding of VLANs, VPNs, IDS/IPS systems, and secure network segmentation.  
 - Host and monitor lightweight servers. 
 - Build a foundation for future cloud, automation, and SIEM integrations.  
 
-### Physical Environment
+### Setup
 - **Form Factor:** GeeekPi T0 mini rack — compact, open-frame design suitable for small spaces.  
 - **Mounting:** Devices secured on 10″ shelves with a recessed power strip for cable management.  
 - **Power Backup:** CyberPower EC650LCD UPS providing surge protection and short-term runtime for all core devices.  
