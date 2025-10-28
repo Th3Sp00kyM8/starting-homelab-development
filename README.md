@@ -36,7 +36,7 @@ Project | Description | Documentation
 
 ## Network Diagram
 
-![Network Diagram]([https://github.com/Th3Sp00kyM8/starting-homelab-development/blob/main/topology/network-diagram.md])
+![Network Diagram](https://github.com/Th3Sp00kyM8/starting-homelab-development/blob/3cbeccdb5610b4181104c97933527bf9b0bb062a/topology/network-diagram.md)
 *(Simplified visual of physical & logical topology.)*
 
 ---
