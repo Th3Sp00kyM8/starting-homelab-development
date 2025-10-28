@@ -43,11 +43,11 @@ Project | Description | Documentation
 
 ## Learning Objectives
 
-- Apply **defense-in-depth principles** in small-scale environments  
-- Develop **practical network segmentation** and secure routing  
-- Experiment with **IDS/IPS systems** (Suricata, Wazuh, Snort)  
-- Strengthen **Linux administration** and **scripting** skills  
-- Build familiarity with **SIEM and log correlation tools**  
+- Apply defense-in-depth principles in small-scale environments  
+- Develop practical network segmentation and secure routing  
+- Experiment with IDS/IPS systems (Suricata, Wazuh, Snort)  
+- Strengthen Linux administration and scripting skills  
+- Build familiarity with SIEM and log correlation tools  
 
 ---
 
