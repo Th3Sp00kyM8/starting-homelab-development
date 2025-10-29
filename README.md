@@ -20,6 +20,16 @@ Beyond personal learning, this project also serves as a reference point for othe
 
 ---
 
+## Learning Objectives
+
+- Apply defense-in-depth principles in small-scale environments  
+- Develop practical network segmentation and secure routing  
+- Experiment with IDS/IPS systems (Suricata, Wazuh, Snort)  
+- Strengthen Linux administration and scripting skills  
+- Build familiarity with SIEM and log correlation tools  
+
+---
+
 ## Current Projects
 
 Project | Description | Documentation 
@@ -34,20 +44,82 @@ Project | Description | Documentation
 
 ---
 
-## Network Diagram
+# Homelab Development Roadmap
 
-![Network Diagram](https://github.com/Th3Sp00kyM8/starting-homelab-development/blob/3cbeccdb5610b4181104c97933527bf9b0bb062a/topology/network-diagram.md)
-*(Simplified visual of physical & logical topology.)*
+This roadmap outlines the next logical phases for expanding the homelab beyond base network setup.  
+Each stage builds on the previous one, moving from infrastructure to automation, monitoring, and advanced cybersecurity use cases.
 
 ---
 
-## Learning Objectives
+## Phase 1 — Core Infrastructure Design & Implementation (Complete)
+- Physical setup, cabling, and power management
+- pfSense firewall, VLANs, and base routing
+- Static IP assignments and DHCP reservations
+- Pi-hole DNS filtering
+- Functional segmented network (Admin, Lab, IoT, Guest)
 
-- Apply defense-in-depth principles in small-scale environments  
-- Develop practical network segmentation and secure routing  
-- Experiment with IDS/IPS systems (Suricata, Wazuh, Snort)  
-- Strengthen Linux administration and scripting skills  
-- Build familiarity with SIEM and log correlation tools  
+---
+
+## Phase 2 — System Hardening & Access Control
+- Enforce SSH key authentication; disable password logins  
+- Enable automatic security updates (`unattended-upgrades`)  
+- Tighten pfSense firewall rules and enable logging  
+- Configure DNS-over-HTTPS or Unbound resolver  
+- Add VPN access for remote management (WireGuard / OpenVPN)
+
+---
+
+## Phase 3 — Security Monitoring & Logging
+- Deploy SIEM or monitoring stack (Wazuh, Graylog, or ELK)  
+- Forward pfSense, Pi-hole, and Ubuntu logs to central collector  
+- Add Grafana dashboards for performance and security metrics  
+- Enable alerting via email or Telegram  
+
+---
+
+## Phase 4 — Automation & Backup
+- Automate updates and configuration backups with Ansible  
+- Snapshot pfSense and Pi-hole configs on schedule  
+- Store backups on NAS or GitHub private repo  
+- Document infrastructure using Markdown or YAML (Infrastructure-as-Code approach)
+
+---
+
+## Phase 5 — Threat Simulation & Detection
+- Build Blue/Red Team test environments  
+- Deploy honeypots and IDS tools (T-Pot, Snort, or Suricata)  
+- Run ethical attack simulations from Lab VLAN (Kali, Metasploit)  
+- Practice detection, log analysis, and incident response  
+
+---
+
+## Phase 6 — Cloud & Remote Integration
+- Connect homelab to cloud providers (AWS, Azure, or GCP)  
+- Test site-to-site VPN or ZeroTier/Tailscale remote links  
+- Backup key services to S3 or Google Drive with Rclone  
+- Simulate hybrid infrastructure and cloud security monitoring  
+
+---
+
+## Phase 7 — Documentation & Visualization
+- Maintain versioned setup notes and changelog  
+- Update network diagrams as new VLANs or devices are added  
+- Build GitHub wiki for installation/config guides  
+- Add screenshots, metrics, and dashboards to portfolio site  
+
+---
+
+### 🎯 Summary
+> **Secure → Monitor → Automate → Experiment → Document.**
+
+This roadmap ensures the lab continues evolving toward a professional-grade cybersecurity environment —  
+mirroring real enterprise network practices while remaining modular and scalable.
+
+---
+
+## Network Diagram
+
+![Network Diagram](https://github.com/Th3Sp00kyM8/starting-homelab-development/blob/3cbeccdb5610b4181104c97933527bf9b0bb062a/topology/network-diagram.md)
 
 ---
 
@@ -57,7 +129,6 @@ Project | Description | Documentation
 **Security:** Wazuh, Suricata, Snort, Pi-hole  
 **Automation:** Bash, Python, Ansible  
 **Visualization:** Grafana, Kibana  
-**Hardware:** Protectli Vault FW4B, Raspberry Pi 4/5, TP-Link Omada series  
 
 ---
 
