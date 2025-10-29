@@ -55,7 +55,7 @@ This phase establishes base connectivity and verifies that each device communica
 ---
 
 ### 2.1 Power-On Sequence
-Boot devices **upstream to downstream** to prevent IP conflicts and ease troubleshooting.
+Boot devices upstream to downstream to prevent IP conflicts and ease troubleshooting.
 
 1. GL.iNet Bridge  
 2. TP-Link ER605 Router  
@@ -80,7 +80,7 @@ Boot devices **upstream to downstream** to prevent IP conflicts and ease trouble
 ### 2.3 Router (TP-Link ER605)
 - Connect to the router via LAN port → open 192.168.0.1.  
 - Set WAN as Dynamic IP (it will receive from GL.iNet).  
-- Set LAN IP to 192.168.1.1. Subnet mask 255.255.255.0
+- Set LAN IP to 192.168.1.1. Subnet mask 255.255.255.224
 - Enable temporary DHCP for pfSense and initial setup.  
 - Verify Internet access from a device on the router LAN.
 
@@ -91,8 +91,8 @@ Boot devices **upstream to downstream** to prevent IP conflicts and ease trouble
 - Assign interfaces:
   - WAN → Router LAN port  
   - LAN → Switch Port   
-- Set LAN IP to 192.168.10.1 and subnet 255.255.255.0
-- Enable DHCP on LAN, range 192.168.10.50 to 192.168.10.200 
+- Set LAN IP to 192.168.10.1 and subnet 255.255.255.224
+- Enable DHCP on LAN, range 192.168.10.22 to 192.168.10.30 
 - Plug laptop into the switch and it should get an IP assigned.
 - Access pfSense via browser: https://192.168.10.1.
 - Complete the initial setup wizard (set hostname, DNS, admin password).  
@@ -112,7 +112,7 @@ Boot devices **upstream to downstream** to prevent IP conflicts and ease trouble
 ### 2.6 Access Point (TP-Link EAP610)
 - Power via PoE port on the switch.  
 - Access via Omada Controller (temporarily install).  
-- Adopt the AP, set: static IP 192.168.10.3, Subnet 255.255.255.0, Gateway: 192.168.10.1
+- Adopt the AP, set: static IP 192.168.10.3, Subnet 255.255.255.224, Gateway: 192.168.10.1
 - Create SSIDs for each VLAN (Admin, Lab, IoT, Guest) — leave VLAN tagging for Section 4.
 - Save & Reboot.
 
@@ -127,6 +127,8 @@ Boot devices **upstream to downstream** to prevent IP conflicts and ease trouble
   ```bash
   curl -sSL https://install.pi-hole.net | bash
   ```
+- Assign IP 192.168.10.20
+  
 
 **Pi 5 (Lab Node)**
 
@@ -140,6 +142,7 @@ Boot devices **upstream to downstream** to prevent IP conflicts and ease trouble
 
 - Connect via Ethernet to switch.
 - Install Ubuntu Server 24 LTS.
+- Assign IP 192.168.10.10
 
 Update packages:
 
@@ -180,10 +183,10 @@ VLANs provide logical isolation between device groups. The configuration below a
 
 | VLAN ID | Name | Subnet | Purpose | Example Devices |
 |----------|------|---------|----------|----------------|
-| 10 | Admin | 192.168.10.0/24 | Core infrastructure and management | pfSense, Switch, GMKtec, Pi-hole |
-| 20 | Lab | 192.168.20.0/24 | Testing, containers, and experimental workloads | Raspberry Pi 5, test VMs |
-| 30 | IoT | 192.168.30.0/24 | Smart or untrusted devices | Cameras, sensors, printers |
-| 40 | Guest | 192.168.40.0/24 | Temporary or public access | Visitor Wi-Fi, sandbox devices |
+| 10 | Admin | 192.168.10.0/27 | Core infrastructure and management | pfSense, Switch, GMKtec, Pi-hole |
+| 20 | Lab | 192.168.20.0/27 | Testing, containers, and experimental workloads | Raspberry Pi 5, test VMs |
+| 30 | IoT | 192.168.30.0/27 | Smart or untrusted devices | Cameras, sensors, printers |
+| 40 | Guest | 192.168.40.0/27 | Temporary or public access | Visitor Wi-Fi, sandbox devices |
 
 ---
 
@@ -198,10 +201,10 @@ VLANs provide logical isolation between device groups. The configuration below a
    - VLAN 40 → Guest
 -  Under Interfaces → Assignments, add each VLAN as a new interface.
 -   Assign static IPs:
-   - VLAN 10 → 192.168.10.1/24  
-   - VLAN 20 → 192.168.20.1/24  
-   - VLAN 30 → 192.168.30.1/24  
-   - VLAN 40 → 192.168.40.1/24  
+   - VLAN 10 → 192.168.10.1/27  
+   - VLAN 20 → 192.168.20.1/27  
+   - VLAN 30 → 192.168.30.1/27 
+   - VLAN 40 → 192.168.40.1/27  
 - Enable DHCP Server on each VLAN (optional for IoT/Guest).  
 
 ---
@@ -265,4 +268,91 @@ After configuration:
 ---
 
 Once VLAN segmentation and firewall rules are confirmed, proceed to Section 4: Post-Setup Verification & Next Steps.
+
+
+# Section 4: Post-Setup Verification & Next Steps
+
+This stage confirms that all devices are reachable, properly segmented, and stable. It also defines the first set of maintenance and expansion actions.
+
+---
+
+### 4.1 Connectivity Verification
+From any device on the Admin VLAN (laptop, GMKtec, or Pi):
+
+```
+ping 192.168.10.1   # pfSense
+ping 192.168.10.2   # Switch
+ping 192.168.10.3   # Access Point
+ping 192.168.10.4   # Pi-hole
+ping 192.168.10.5   # Security Server
+```
+
+- All pings should respond within 1 ms – 3 ms.
+- Confirm Internet access: ping 8.8.8.8.
+- Check pfSense → Status → DHCP Leases to verify each device’s IP is correct.
+
+# 4.2 VLAN Isolation Tests
+
+Connect a client to each SSID (Admin, Lab, IoT, Guest).
+
+Run:
+```
+ip a        # verify correct subnet (10.x, 20.x, etc.)
+ping 192.168.10.1
+ping 192.168.20.1
+```
+
+- VLANs should reach the Internet but not cross-communicate unless rules permit.
+- Confirm pfSense Firewall Logs → Normal View show blocked inter-VLAN attempts.
+
+# 4.3 Service Verification
+
+- Pi-hole:
+Visit http://192.168.10.4/admin → confirm queries populate in Query Log.
+- AP:
+Test each SSID → ensure expected VLAN assignment.
+- Switch:
+Check port LEDs → confirm link lights and PoE power (for AP).
+- Security Server:
+SSH in and confirm Internet + DNS resolution.
+
+# 4.4 Configuration Backups
+
+Create full backups for reproducibility:
+
+# pfSense
+```
+Diagnostics → Backup/Restore → Download configuration.xml
+```
+# Switch
+```
+System → Save Config
+```
+# Pi-hole
+```
+Settings → Teleporter → Export
+```
+# Ubuntu Servers
+```
+sudo tar czvf config_backup_$(date +%F).tar.gz /etc/netplan /etc/pihole /etc/wazuh*
+```
+
+- Store all backups in a /backups/configs/ folder (local or GitHub-private).
+
+# 4.5 Maintenance & Next Steps
+
+| Area               | Action                                                   | Purpose                                                  |
+| ------------------ | -------------------------------------------------------- | -------------------------------------------------------- |
+| **Monitoring**     | Deploy Wazuh, Security Onion, or Grafana stack on GMKtec | Central log collection and visibility                    |
+| **Automation**     | Use Ansible or shell scripts for routine updates         | Simplify patching and config management                  |
+| **Resilience**     | Clone Pi micro-SDs or move to SSD boot                   | Reduce wear and recovery time                            |
+| **VLAN Expansion** | Add Monitoring VLAN or DMZ later                         | Improve isolation for honeypots or external-facing tests |
+| **Documentation**  | Update this README after each major change               | Maintain version history and reproducibility             |
+
+Completion Check:
+- All core devices reachable
+- Internet access verified
+- VLAN isolation confirmed
+- Backups saved
+- Next-phase goals documented
 
