@@ -1,7 +1,6 @@
 
-<img width="3651" height="4625" alt="Cisco network diagram(2)" src="https://github.com/user-attachments/assets/fb6c6243-1f6f-4ae8-9f79-a401b06218fc" />
-Designed with: https://www.lucidchart.com/
-
+<img width="3651" height="4625" alt="Cisco network diagram(3)" src="https://github.com/user-attachments/assets/7ad49207-8da7-41d0-9d95-3bd7ee70c537" />
+Designed with:https:lucid.app
 
 ## Network Overview Draft 1.0
 
