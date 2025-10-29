@@ -34,7 +34,7 @@ The switch acts as the central hub for all LAN devices.
 | Raspberry Pi 5 | Port 4 | Switch | Lab node / testing |
 | GMKtec Mini PC | Port 5 | Switch | Security server / SIEM host |
 
-Keep ports consistent; label both ends of each cable for traceability.
+- Keep ports consistent; label both ends of each cable for traceability.
 
 ---
 
@@ -46,11 +46,20 @@ Before powering everything on:
 - Ensure airflow and cable slack for maintenance.  
 - Keep monitor and keyboard nearby for pfSense initial setup.
 
-Once all connections are verified, move to Network Initialization Section 3.
+Once all connections are verified, move to Network Initialization Section 2.
 
 # Section 2: Network Initialization
 
 This phase establishes base connectivity and verifies that each device communicates correctly within the network chain.
+
+| Network Role             | CIDR            | Purpose               |
+| ------------------------ | --------------- | --------------------- |
+| GL.iNet Bridge           | 192.168.5.0/24  | Upstream Wi-Fi Bridge |
+| Router LAN → pfSense WAN | 192.168.15.0/24 | WAN handoff           |
+| pfSense Admin/Mgmt       | 192.168.10.0/27 | Core LAN              |
+| VLAN 20                  | 192.168.20.0/27 | Lab network           |
+| VLAN 30                  | 192.168.30.0/27 | IoT network           |
+| VLAN 40                  | 192.168.40.0/27 | Guest network         |
 
 ---
 
@@ -80,9 +89,10 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
 ### 2.3 Router (TP-Link ER605)
 - Connect to the router via LAN port → open 192.168.0.1.  
 - Set WAN as Dynamic IP (it will receive from GL.iNet).  
-- Set LAN IP to 192.168.1.1. Subnet mask 255.255.255.224
+- Set LAN IP to 192.168.15.1 Subnet mask 255.255.255.0
 - Enable temporary DHCP for pfSense and initial setup.  
 - Verify Internet access from a device on the router LAN.
+- pfSense WAN will receive IP from 192.168.15.0/24 DHCP
 
 ---
 
@@ -92,7 +102,8 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
   - WAN → Router LAN port  
   - LAN → Switch Port   
 - Set LAN IP to 192.168.10.1 and subnet 255.255.255.224
-- Enable DHCP on LAN, range 192.168.10.22 to 192.168.10.30 
+- Enable DHCP on LAN, range 192.168.10.22 to 192.168.10.30
+    - Lower addresses (.2–.10) reserved for static infrastructure.
 - Plug laptop into the switch and it should get an IP assigned.
 - Access pfSense via browser: https://192.168.10.1.
 - Complete the initial setup wizard (set hostname, DNS, admin password).  
@@ -103,7 +114,7 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
 - Connect a laptop to any open port on the switch.
 - Download and run TP-Link Easy Smart Configuration Utility on your laptop (TP-Link’s official tool).
 - Once started, it will show the switch. 
-- Assign a static IP (e.g., 192.168.10.2).
+- Assign a static IP 192.168.10.2. Gateway 192.168.10.1.
 - Reboot.
 - Confirm uplink to pfSense and that all downstream devices receive IPs.  
 
@@ -161,12 +172,13 @@ Run these quick tests before moving on:
 ```
 ping 192.168.10.1     # pfSense
 ping 192.168.10.2     # Switch
-ping 192.168.10.4     # Pi-hole
-ping 192.168.10.5     # GMKtec
+ping 192.168.10.20     # Pi-hole
+ping 192.168.10.10     # GMKtec
 ```
 
 - Verify Internet connectivity from a LAN device.
 - Confirm pfSense DHCP leases display all devices.
+- WAN test: ping 192.168.15.1 > verifies pfSense <-> router communication.
 
 Once base connectivity and addressing are verified, proceed to Section 3: VLAN & Firewall Configuration.
 
@@ -183,7 +195,7 @@ VLANs provide logical isolation between device groups. The configuration below a
 
 | VLAN ID | Name | Subnet | Purpose | Example Devices |
 |----------|------|---------|----------|----------------|
-| 10 | Admin | 192.168.10.0/27 | Core infrastructure and management | pfSense, Switch, GMKtec, Pi-hole |
+| 10 | Admin/Mgmt | 192.168.10.0/27 | Core infrastructure and management | pfSense, Switch, GMKtec, Pi-hole |
 | 20 | Lab | 192.168.20.0/27 | Testing, containers, and experimental workloads | Raspberry Pi 5, test VMs |
 | 30 | IoT | 192.168.30.0/27 | Smart or untrusted devices | Cameras, sensors, printers |
 | 40 | Guest | 192.168.40.0/27 | Temporary or public access | Visitor Wi-Fi, sandbox devices |
@@ -195,7 +207,7 @@ VLANs provide logical isolation between device groups. The configuration below a
 - Log in to pfSense (https://192.168.10.1).
 - Navigate to Interfaces → Assignments → VLANs → Add.
 - Create VLANs on the LAN interface as follows:
-   - VLAN 10 → Admin  
+   - VLAN 10 → Admin/Mgmt  
    - VLAN 20 → Lab  
    - VLAN 30 → IoT  
    - VLAN 40 → Guest
@@ -211,19 +223,24 @@ VLANs provide logical isolation between device groups. The configuration below a
 
 ### 3.3 Switch VLAN Configuration (TP-Link TL-SG108PE)
 
-- Access the switch management page (192.168.10.2).
+- Access the switch management page 192.168.10.2.
 - Under VLAN → 802.1Q VLAN, create the same VLAN IDs (10, 20, 30, 40).
-- Tag the port connected to pfSense (uplink port) with all VLANs.
-- Assign untagged ports per device group:
+- Router uplink port note (Router → Firewall) is not VLAN-tagged, purely upstream/WAN.
+- At this stage, the pfSense–switch link is untagged VLAN 10 (Admin/Mgmt) only.
+- Ports assigned to VLAN 20 will remain inactive until the Lab VLAN is implemented.
+- Once all VLANs are configured in pfSense, this link will be converted into a trunk carrying VLANs 10, 20, 30, and 40.
 
 | Port | Device | VLAN | Tagging |
 |------|---------|------|----------|
-| 1 | pfSense LAN | 10–40 | Tagged (Trunk) |
+| 1 | pfSense LAN | 10 (Admin/Mgmt) | Untagged → *Tagged (10–40) after VLAN setup* |
 | 2 | GMKtec Security Server | 10 | Untagged |
 | 3 | Raspberry Pi 4 (Pi-hole) | 10 | Untagged |
-| 4 | Raspberry Pi 5 (Lab Node) | 20 | Untagged |
+| 4 | Raspberry Pi 5 (Lab Node) | 20 | Untagged (future VLAN) |
 | 5 | Access Point | 10–40 | Tagged (Trunk) |
 | 6–8 | Spare / Future Use | TBD | Custom |
+
+- Note: Keep Port 1 as untagged VLAN 10 until pfSense VLAN interfaces are configured.  
+- After enabling VLANs 20, 30, 40 in pfSense, update Port 1 to tagged for 10–40 to allow inter-VLAN trunking.
 
 ---
 
@@ -237,6 +254,7 @@ If using the Omada Controller:
    - IoTNet → VLAN 30  
    - GuestNet → VLAN 40  
 3. Optionally limit Guest SSID access under Wireless Control → Access Control.
+4. Confirm AP mgmt IP 192.168.10.3/27; uplink port should be “untagged VLAN 10, tagged 20/30/40”.
 
 ---
 
@@ -290,6 +308,7 @@ ping 192.168.10.5   # Security Server
 - All pings should respond within 1 ms – 3 ms.
 - Confirm Internet access: ping 8.8.8.8.
 - Check pfSense → Status → DHCP Leases to verify each device’s IP is correct.
+- If testing from Admin VLAN, do not expect to reach Router (192.168.15.1) unless a rule is added for WAN access.
 
 # 4.2 VLAN Isolation Tests
 
@@ -348,6 +367,8 @@ sudo tar czvf config_backup_$(date +%F).tar.gz /etc/netplan /etc/pihole /etc/waz
 | **Resilience**     | Clone Pi micro-SDs or move to SSD boot                   | Reduce wear and recovery time                            |
 | **VLAN Expansion** | Add Monitoring VLAN or DMZ later                         | Improve isolation for honeypots or external-facing tests |
 | **Documentation**  | Update this README after each major change               | Maintain version history and reproducibility             |
+
+- Consider enabling bridge mode or static route on ER605 to reduce double NAT.
 
 Completion Check:
 - All core devices reachable
