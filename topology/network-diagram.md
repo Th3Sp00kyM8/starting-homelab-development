@@ -1,5 +1,5 @@
 
-<img width="3651" height="4625" alt="Cisco network diagram(1)" src="https://github.com/user-attachments/assets/a9d312c9-3e96-41be-8a48-da1fc53422df" />
+<img width="3651" height="4625" alt="Cisco network diagram(2)" src="https://github.com/user-attachments/assets/fb6c6243-1f6f-4ae8-9f79-a401b06218fc" />
 Designed with: https://www.lucidchart.com/
 
 
