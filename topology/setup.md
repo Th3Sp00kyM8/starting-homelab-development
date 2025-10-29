@@ -247,14 +247,14 @@ VLANs provide logical isolation between device groups. The configuration below a
 ### 3.4 VLANs on the Access Point (EAP610)
 
 If using the Omada Controller:
-1. Adopt the AP and go to Wireless Networks → Add SSID.  
-2. Create separate SSIDs mapped to VLAN IDs:
+- Adopt the AP and go to Wireless Networks → Add SSID.  
+- Create separate SSIDs mapped to VLAN IDs:
    - AdminNet → VLAN 10  
    - LabNet → VLAN 20  
    - IoTNet → VLAN 30  
    - GuestNet → VLAN 40  
-3. Optionally limit Guest SSID access under Wireless Control → Access Control.
-4. Confirm AP mgmt IP 192.168.10.3/27; uplink port should be “untagged VLAN 10, tagged 20/30/40”.
+- Optionally limit Guest SSID access under Wireless Control → Access Control.
+- Confirm AP mgmt IP 192.168.10.3/27; uplink port should be “untagged VLAN 10, tagged 20/30/40”.
 
 ---
 
@@ -277,11 +277,11 @@ Then add a final “deny all” rule on each VLAN to block unauthorized traffic 
 ### 3.6 Verification
 
 After configuration:
-1. Connect a device to each VLAN/SSID.  
-2. Confirm the assigned IP address matches the expected subnet.  
-3. Ping external sites (8.8.8.8) to verify Internet access.  
-4. Attempt to ping another VLAN — it should fail unless allowed by rule.  
-5. Confirm pfSense Dashboard → Interfaces shows active gateways for all VLANs.
+- Connect a device to each VLAN/SSID.  -
+-  Confirm the assigned IP address matches the expected subnet.
+-  Ping external sites (8.8.8.8) to verify Internet access.
+-  Attempt to ping another VLAN — it should fail unless allowed by rule.  
+-  Confirm pfSense Dashboard → Interfaces shows active gateways for all VLANs.
 
 ---
 
