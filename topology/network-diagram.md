@@ -1,5 +1,7 @@
 
 <img width="1947" height="2387" alt="Cisco network diagram" src="https://github.com/user-attachments/assets/444ee836-6a17-426a-9c46-66c5008d8c1b" />
+Designed with: https://www.lucidchart.com/
+
 
 ## Network Overview Draft 1.0
 
@@ -34,3 +36,4 @@ This network is structured for modularity, visibility, and segmentation.
 - **Power & Environment Monitoring:** Exploring SNMP-based UPS and temperature sensors for system health tracking.
 
 These refinements aim to evolve the lab from a segmented local network into a fully observable, managed, and automatable defensive environment.
+
