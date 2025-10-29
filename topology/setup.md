@@ -1,6 +1,6 @@
 This document will provide an overview on general setup. 
 
-# ⚙️ Section 1: Physical Preparation
+# Section 1: Physical Preparation
 
 This phase ensures all devices are safely powered, labeled, and networked before configuration begins.
 
@@ -120,8 +120,8 @@ Boot devices **upstream to downstream** to prevent IP conflicts and ease trouble
 
 ### 2.7 Raspberry Pis
 **Pi 4 (Pi-hole)**
-- Boot from SD / USB with Raspberry Pi OS Lite or Ubuntu Server 24 LTS.  
-- Connect to the switch; confirm DHCP assignment.  
+- Boot from SD / USB with Raspberry Pi OS Lite or Ubuntu Server 24 LTS.
+- Connect to the switch; confirm DHCP assignment.
 - SSH in using its IP and install Pi-hole:
 
   ```bash
@@ -165,4 +165,104 @@ ping 192.168.10.5     # GMKtec
 - Verify Internet connectivity from a LAN device.
 - Confirm pfSense DHCP leases display all devices.
 
-Once base connectivity and addressing are verified, proceed to Section 4: VLAN & Firewall Configuration.
+Once base connectivity and addressing are verified, proceed to Section 3: VLAN & Firewall Configuration.
+
+
+# Section 3: VLAN & Firewall Configuration
+
+This phase introduces network segmentation and basic access controls to simulate an enterprise-style defensive layout.
+
+---
+
+### 3.1 VLAN Planning
+
+VLANs provide logical isolation between device groups. The configuration below assumes pfSense as the VLAN controller and the switch as the distribution layer.
+
+| VLAN ID | Name | Subnet | Purpose | Example Devices |
+|----------|------|---------|----------|----------------|
+| 10 | Admin | 192.168.10.0/24 | Core infrastructure and management | pfSense, Switch, GMKtec, Pi-hole |
+| 20 | Lab | 192.168.20.0/24 | Testing, containers, and experimental workloads | Raspberry Pi 5, test VMs |
+| 30 | IoT | 192.168.30.0/24 | Smart or untrusted devices | Cameras, sensors, printers |
+| 40 | Guest | 192.168.40.0/24 | Temporary or public access | Visitor Wi-Fi, sandbox devices |
+
+---
+
+### 3.2 pfSense VLAN Configuration
+
+- Log in to pfSense (https://192.168.10.1).
+- Navigate to Interfaces → Assignments → VLANs → Add.
+- Create VLANs on the LAN interface as follows:
+   - VLAN 10 → Admin  
+   - VLAN 20 → Lab  
+   - VLAN 30 → IoT  
+   - VLAN 40 → Guest
+-  Under Interfaces → Assignments, add each VLAN as a new interface.
+-   Assign static IPs:
+   - VLAN 10 → 192.168.10.1/24  
+   - VLAN 20 → 192.168.20.1/24  
+   - VLAN 30 → 192.168.30.1/24  
+   - VLAN 40 → 192.168.40.1/24  
+- Enable DHCP Server on each VLAN (optional for IoT/Guest).  
+
+---
+
+### 3.3 Switch VLAN Configuration (TP-Link TL-SG108PE)
+
+- Access the switch management page (192.168.10.2).
+- Under VLAN → 802.1Q VLAN, create the same VLAN IDs (10, 20, 30, 40).
+- Tag the port connected to pfSense (uplink port) with all VLANs.
+- Assign untagged ports per device group:
+
+| Port | Device | VLAN | Tagging |
+|------|---------|------|----------|
+| 1 | pfSense LAN | 10–40 | Tagged (Trunk) |
+| 2 | GMKtec Security Server | 10 | Untagged |
+| 3 | Raspberry Pi 4 (Pi-hole) | 10 | Untagged |
+| 4 | Raspberry Pi 5 (Lab Node) | 20 | Untagged |
+| 5 | Access Point | 10–40 | Tagged (Trunk) |
+| 6–8 | Spare / Future Use | TBD | Custom |
+
+---
+
+### 3.4 VLANs on the Access Point (EAP610)
+
+If using the Omada Controller:
+1. Adopt the AP and go to Wireless Networks → Add SSID.  
+2. Create separate SSIDs mapped to VLAN IDs:
+   - AdminNet → VLAN 10  
+   - LabNet → VLAN 20  
+   - IoTNet → VLAN 30  
+   - GuestNet → VLAN 40  
+3. Optionally limit Guest SSID access under Wireless Control → Access Control.
+
+---
+
+### 3.5 pfSense Firewall Rules
+
+Navigate to Firewall → Rules and configure at least one rule set per VLAN interface.
+
+| Interface | Action | Source | Destination | Description |
+|------------|---------|---------|-------------|-------------|
+| VLAN 10 (Admin) | Allow | VLAN 10 net | Any | Full access for management |
+| VLAN 20 (Lab) | Allow | VLAN 20 net | Any | Limited outbound / testing |
+| VLAN 30 (IoT) | Allow | VLAN 30 net | Internet (not local nets) | Isolated outbound only |
+| VLAN 40 (Guest) | Allow | VLAN 40 net | Internet only | Fully isolated guest access |
+| All VLANs | Block | Any | RFC1918 private nets | Default isolation rule |
+
+Then add a final “deny all” rule on each VLAN to block unauthorized traffic between internal subnets.
+
+---
+
+### 3.6 Verification
+
+After configuration:
+1. Connect a device to each VLAN/SSID.  
+2. Confirm the assigned IP address matches the expected subnet.  
+3. Ping external sites (8.8.8.8) to verify Internet access.  
+4. Attempt to ping another VLAN — it should fail unless allowed by rule.  
+5. Confirm pfSense Dashboard → Interfaces shows active gateways for all VLANs.
+
+---
+
+Once VLAN segmentation and firewall rules are confirmed, proceed to Section 4: Post-Setup Verification & Next Steps.
+
