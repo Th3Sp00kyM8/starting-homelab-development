@@ -2,6 +2,8 @@
 <img width="3651" height="4625" alt="Cisco network diagram(3)" src="https://github.com/user-attachments/assets/7ad49207-8da7-41d0-9d95-3bd7ee70c537" />
 Designed with: https://www.lucidchart.com
 
+Hotspot for fear of otherwise becoming homeless.
+
 ## Network Overview Draft 1.0
 
 This network is structured for modularity, visibility, and segmentation.  
