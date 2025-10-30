@@ -3,6 +3,7 @@
 Designed with: https://www.lucidchart.com
 
 Hotspot for fear of otherwise becoming homeless.
+All IPs and subnets are for illustration only — not active network addresses.
 
 ## Network Overview Draft 1.0
 
