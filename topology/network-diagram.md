@@ -1,5 +1,5 @@
 
-<img width="3651" height="4625" alt="Cisco network diagram(3)" src="https://github.com/user-attachments/assets/7ad49207-8da7-41d0-9d95-3bd7ee70c537" />
+<img width="3651" height="4625" alt="Cisco network diagram(4)" src="https://github.com/user-attachments/assets/251470c5-8a95-4ac6-8920-66db8421c3ab" />
 Designed with: https://www.lucidchart.com
 
 Hotspot for fear of otherwise becoming homeless.
