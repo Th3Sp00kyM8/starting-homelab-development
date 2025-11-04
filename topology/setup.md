@@ -77,10 +77,14 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
 ---
 
 ### 2.2 GL.iNet Bridge Setup
-- Connect a laptop to the GL.iNet via Ethernet or Wi-Fi.  
-- Access the dashboard at 192.168.8.1.  
-- Under Internet, connect the bridge to your mobile hotspot.  
+- Before adding power, insert microSD.
+- Connect a laptop to the GL.iNet via Ethernet or Wi-Fi.
+- Access the dashboard at 192.168.8.1.
+- Update admin password & set SSID/passwords.  
+- Under Internet, connect to source. Using mobile tether.
+- Update WiFi Security to WPA2-PSK/WPA3-SAE. Keep both 5 & 2.4 GHz active.
 - Under LAN, disable DHCP to ensure it passes addresses transparently.
+- System > Upgrade > Firmware Online Upgrade.
 - Save and reboot.
 - Verify that the router receives Internet access through Ethernet.
 
