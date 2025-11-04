@@ -84,6 +84,8 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
 - Save and reboot.
 - Verify that the router receives Internet access through Ethernet.
 
+https://www.youtube.com/watch?v=f7DYULL6ZSI
+
 ---
 
 ### 2.3 Router (TP-Link ER605)
