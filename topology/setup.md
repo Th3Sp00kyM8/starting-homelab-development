@@ -1,4 +1,4 @@
-This document will provide an overview on general setup. 
+This document provides a general overview of the setup process. Some details may vary depending on the specific devices you choose. Part of the learning experience involves exploring and understanding these nuances.
 
 # Section 1: Physical Preparation
 
@@ -88,16 +88,16 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
 - Save and reboot.
 - Verify that the router receives Internet access through Ethernet.
 
-https://www.youtube.com/watch?v=f7DYULL6ZSI
-
 ---
 
 ### 2.3 Router (TP-Link ER605)
-- Connect to the router via LAN port → open 192.168.0.1.  
+- Connect to the router via LAN port → open 192.168.0.1.
 - Set WAN as Dynamic IP (it will receive from GL.iNet).  
 - Set LAN IP to 192.168.15.1 Subnet mask 255.255.255.0
 - Enable temporary DHCP for pfSense and initial setup.  
 - Verify Internet access from a device on the router LAN.
+- Create a backup after configurations.
+- Upgrade firmware and reboot.
 - pfSense WAN will receive IP from 192.168.15.0/24 DHCP
 
 ---
@@ -382,4 +382,3 @@ Completion Check:
 - VLAN isolation confirmed
 - Backups saved
 - Next-phase goals documented
-
