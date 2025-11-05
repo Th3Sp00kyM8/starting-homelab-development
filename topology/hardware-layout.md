@@ -53,6 +53,7 @@ This layered path simulates a small enterprise topology, where routing, security
 2. **Routing Layer (ER605)**  
    - Handles load balancing, static routes, and WAN monitoring.  
    - Acts as the first controlled entry point before traffic hits the firewall.
+   - Allows future expanasion into a layered architecture.
 
 3. **Security Layer (Protectli Vault)**  
    - Applies firewall rules, NAT, and VLAN segmentation.  
