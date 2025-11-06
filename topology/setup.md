@@ -108,6 +108,7 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
 - Assign interfaces:
   - WAN → Router LAN port  
   - LAN → Switch Port   
+- Connect to WAN port and open 192.168.1.1. 
 - Set LAN IP to 192.168.10.1 and subnet 255.255.255.224
 - Enable DHCP on LAN, range 192.168.10.22 to 192.168.10.30
     - Lower addresses (.2–.10) reserved for static infrastructure.
