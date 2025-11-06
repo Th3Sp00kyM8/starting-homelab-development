@@ -103,6 +103,7 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
 ---
 
 ### 2.4 Firewall (Protectli Vault)
+- Download your preferred firewall/routing software to a flash via Rufus. Using OPNSense.
 - Connect monitor and keyboard for first boot. 
 - Assign interfaces:
   - WAN → Router LAN port  
