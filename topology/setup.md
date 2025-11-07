@@ -116,12 +116,15 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
     - Lower addresses (.2–.10) reserved for static infrastructure.
 - Plug laptop into the switch and it should get an IP assigned.
 - Access pfSense via browser: https://192.168.10.1.
-- Update firmware. If issues:
+- Update firmware. If issues with gui, go through ssh:
+```bash
 # Force a refresh of all repositories
 pkg update -f
 
 # Force an upgrade of all installed packages
 pkg upgrade -f
+  ```
+
 - Complete the initial setup wizard (set hostname, DNS, admin password).  
 
 ---
