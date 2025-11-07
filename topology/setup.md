@@ -107,13 +107,21 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
 - Connect monitor and keyboard for first boot. 
 - Assign interfaces:
   - WAN → Router LAN port  
-  - LAN → Switch Port   
-- Connect to WAN port and open 192.168.1.1. 
+  - LAN → Switch Port
+- Update firmware and reboot. 
+- Warning: For the Protectli, there's a chance WAN & LAN will be switched during assignment. Reassign. 
+- Connect to WAN port and open 192.168.1.1.
 - Set LAN IP to 192.168.10.1 and subnet 255.255.255.224
 - Enable DHCP on LAN, range 192.168.10.22 to 192.168.10.30
     - Lower addresses (.2–.10) reserved for static infrastructure.
 - Plug laptop into the switch and it should get an IP assigned.
 - Access pfSense via browser: https://192.168.10.1.
+- Update firmware. If issues:
+# Force a refresh of all repositories
+pkg update -f
+
+# Force an upgrade of all installed packages
+pkg upgrade -f
 - Complete the initial setup wizard (set hostname, DNS, admin password).  
 
 ---
