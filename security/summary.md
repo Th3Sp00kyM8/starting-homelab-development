@@ -366,7 +366,6 @@ This ensures that observability and automation remain secure even as complexity 
 The architecture’s long-term trajectory is to transition from **manual observation to autonomous defense orchestration**.  
 Each node will contribute data, context, and eventually decision logic — allowing the environment to function as a small-scale **cyber defense operations network**.
 
-> The end state: A realistic environment to test theories, prove concepts, and host hundreds of frustrating hours that end with maniac levels of laughter. 
-
+> The end state: A realistic environment built to test theories, prove concepts, and turn countless hours of frustration into moments of hard-earned, unhinged laughter.
 
 
