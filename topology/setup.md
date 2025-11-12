@@ -109,7 +109,7 @@ Boot devices upstream to downstream to prevent IP conflicts and ease troubleshoo
   - WAN → Router LAN port  
   - LAN → Switch Port
 - Update firmware and reboot. 
-- Warning: For the Protectli, there's a chance WAN & LAN will be switched during assignment. Reassign. 
+- Warning: For the Protectli (using opnsense), there's a chance WAN & LAN will be switched during assignment. Reassign and rerun services so assignments save. 
 - Connect to WAN port and open 192.168.1.1.
 - Set LAN IP to 192.168.10.1 and subnet 255.255.255.224
 - Enable DHCP on LAN, range 192.168.10.22 to 192.168.10.30
