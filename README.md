@@ -9,14 +9,14 @@ Beyond personal learning, this project also serves as a reference point for othe
 ---
 
 ## Overview
-
-**Homelab Stack:**
-- Protectli Vault FW4B – running pfSense for routing, firewalling, and VLAN segmentation
-- TP-Link ER605 – secondary router for VPN and load-balancing experiments
-- TP-Link TL-SG108PE – 8-port PoE+ managed switch for VLAN testing
-- TP-Link EAP610 – Wi-Fi 6 access point for wireless segmentation and SSID control
-- GL.iNet Slate AX – portable VPN router for remote access testing
-- Raspberry Pi 4 & 5 – Ubuntu Server 24 LTS running Pi-hole, Docker, and security tools
+- Protectli Vault FW4B – running pfSense for routing, firewalling, VLAN segmentation, IDS/IPS testing, and network hardening
+- TP-Link ER605 – secondary router used for VPN tunneling, failover, and load-balancing experiments
+- TP-Link TL-SG108PE – 8-port PoE+ managed switch for VLAN testing, port isolation, and device-level traffic control
+- TP-Link EAP610 – Wi-Fi 6 access point for wireless segmentation, multiple SSIDs, and captive-network experiments
+- GL.iNet Slate AX – portable VPN router for remote-access testing, travel networking, and WireGuard/OpenVPN experiments
+- Raspberry Pi 4 & 5 – Ubuntu Server 24 LTS hosting Pi-hole, Docker containers, local DNS filtering, and various security tools
+- GMKtec G10 Mini-Server – primary analysis node running SIEM tools (Wazuh, Zeek), log aggregation (Grafana, Loki, Promtail), and containerized security labs
+- M6 Ultra – dedicated DMZ/bastion host used for isolated testing, external-facing services, honeypot experiments, and traffic inspection scenarios
 
 ---
 
